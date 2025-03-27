@@ -8,45 +8,6 @@ import seaborn as sns
 import numpy as np
 from scipy.stats import pearsonr
 
-def plot_semantic_correlations(semantic_global, semantic_local, save_path=None):
-    plt.figure(figsize=(14, 10))
-    g_feat = semantic_global.detach().cpu().numpy()
-    l_feat = semantic_local.detach().cpu().numpy()
-
-    g_feat = g_feat[:, :32]
-    l_feat = l_feat[:, :32]
-
-    batch_size, feat_dim = g_feat.shape
-
-    def compute_correlation_matrix(feat1, feat2):
-        corr_matrix = np.zeros((feat_dim, feat_dim))
-        for i in range(feat_dim):
-            for j in range(feat_dim):
-                corr_matrix[i, j] = pearsonr(feat1[:, i], feat2[:, j])[0]
-        return corr_matrix
-
-    # 计算统计量
-    global corr_matrix
-    corr_matrix = compute_correlation_matrix(g_feat, l_feat)
-    ax = sns.heatmap(corr_matrix,
-                cmap="coolwarm",
-                cbar_ax=None,
-                # cbar=False,
-                square=True)
-    ax.tick_params(
-        left=False,  # 关闭左侧刻度线
-        bottom=False  # 关闭底部刻度线
-    )
-    ax.axis('off')
-    plt.xlabel('Local Semantic')
-    plt.ylabel('Global Semantic')
-
-    plt.tight_layout()
-
-    if save_path:
-        plt.savefig(save_path + '.pdf', dpi=300, bbox_inches='tight')
-        plt.savefig(save_path + '.png', dpi=300, bbox_inches='tight')
-
 def weights_init(m):
     classname = m.__class__.__name__
     if classname.find('Linear') != -1:
@@ -409,40 +370,26 @@ class SemanticSelector(nn.Module):
 #         super().__init__()
 #         semantic_dim = opt.attSize
 #         num_heads = opt.head_number
-#
-#         # 共享的激活函数
 #         self.lrelu = nn.LeakyReLU(0.2, True)
 #         self.sigmoid = nn.Sigmoid()
-#
-#         # 投影层参数化（减少重复代码）
 #         def create_proj():
 #             return nn.Sequential(
 #                 nn.Linear(semantic_dim, semantic_dim),
 #                 nn.ReLU(),
 #                 nn.Linear(semantic_dim, semantic_dim)
 #             )
-#
-#         # 全局和局部投影使用相同结构
 #         self.proj_global_up = create_proj()
 #         self.proj_global_down = create_proj()
 #         self.proj_local_up = create_proj()
 #         self.proj_local_down = create_proj()
-#
-#         # 添加最后的激活函数
 #         self.proj_global_up.add_module("3", nn.Sigmoid())
 #         self.proj_local_up.add_module("3", nn.Sigmoid())
-#
-#         # 视觉特征投影
 #         self.proj_visual = nn.Linear(opt.resSize, semantic_dim)
-#
-#         # 共享基础参数的注意力机制
 #         self.attn_base = nn.MultiheadAttention(
 #             embed_dim=semantic_dim,
 #             num_heads=num_heads,
 #             batch_first=True
 #         )
-#
-#         # 门控机制统一创建
 #         def create_gate():
 #             return nn.Sequential(
 #                 nn.Linear(2 * semantic_dim, semantic_dim),
@@ -451,24 +398,17 @@ class SemanticSelector(nn.Module):
 #
 #         self.gate = create_gate()
 #         self.gate2 = create_gate()
-#
-#         # 简化特征变换层
 #         self.g = nn.Sequential(
 #             nn.Linear(semantic_dim, semantic_dim),
 #             nn.ReLU()
 #         )
 #
-#         self.iterations = 20  # 从5次减少到3次
+#         self.iterations = 20
 #
 #     def forward(self, semantic_global, semantic_local, visual_feat, epoch=None):
-#         # 维度预处理
 #         h = self.proj_visual(visual_feat).unsqueeze(1)  # [B, 1, D]
-#
-#         # 全局语义处理
 #         g = (self.proj_global_up(semantic_global) *
 #              self.proj_global_down(semantic_global)).unsqueeze(1)
-#
-#         # 优化后的注意力循环
 #         for _ in range(self.iterations):
 #             g, _ = self.attn_base(
 #                 query=h,
@@ -477,32 +417,23 @@ class SemanticSelector(nn.Module):
 #                 need_weights=False
 #             )
 #             g = F.normalize(g + self.g(g), dim=-1)
-#
-#         # 全局特征融合
 #         global_feat = g.squeeze(1)
 #         gate = self.gate(torch.cat([global_feat, h.squeeze(1)], dim=1))
 #         fused_feat1 = F.normalize(gate * global_feat + (1 - gate) * h.squeeze(1))
-#
-#         # 局部语义处理
 #         l = (self.proj_local_up(semantic_local) *
 #              self.proj_local_down(semantic_local)).unsqueeze(1)
 #
-#         # 使用基础注意力模块
 #         for _ in range(self.iterations):
 #             l, _ = self.attn_base(
-#                 query=g.detach(),  # 阻止梯度回传
+#                 query=g.detach(),
 #                 key=l,
 #                 value=l,
 #                 need_weights=False
 #             )
 #             l = F.normalize(l + self.g(l), dim=-1)
-#
-#         # 局部特征融合
 #         local_feat = l.squeeze(1)
 #         gate2 = self.gate2(torch.cat([local_feat, h.squeeze(1)], dim=1))
 #         fused_feat2 = F.normalize(gate2 * local_feat + (1 - gate2) * h.squeeze(1))
-#
-#         # 最终特征拼接
 #         fused_feat = torch.cat([visual_feat, fused_feat1, fused_feat2], dim=1)
 #
 #         return fused_feat, fused_feat1, fused_feat2
