@@ -33,8 +33,7 @@ class DATA_LOADER(object):
         self.epochs_completed = 0
 
     def read_matdataset(self, opt):
-        # matcontent = sio.loadmat(opt.dataroot + "/" + opt.dataset + "/" + opt.image_embedding + ".mat")
-        matcontent = h5py.File(opt.dataroot + "/" + opt.dataset + "/" + "feature_" + opt.dataset + "_VIT_224.hdf5")
+        matcontent = h5py.File(opt.dataroot + "/" + opt.dataset + "/" + "feature_" + opt.dataset + ".hdf5")
         feature = np.array(matcontent.get('feature_map'))
         label = np.array(matcontent.get('labels'))
         matcontent = sio.loadmat(opt.dataroot + "/" + opt.dataset + "/" + opt.class_embedding + "_splits.mat")
