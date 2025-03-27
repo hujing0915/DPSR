@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+########################### FREE model ###########################
 def Other_label(labels, num_classes):
     index = torch.randint(num_classes, (labels.shape[0],)).to(labels.device)
     other_labels = labels+index
@@ -105,7 +106,7 @@ class TripCenterLoss_min_margin(nn.Module):
             adjusted_margin = margin
         return adjusted_margin
 
-
+########################### Ours model ###########################
 class SupConLoss(nn.Module):
     def __init__(self, temperature=0.01):
         super(SupConLoss, self).__init__()
