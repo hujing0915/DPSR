@@ -241,25 +241,8 @@ class CLASSIFIER:
             feat2 = self.netGA(means)
             feat1 = self.netGA(mus)
             X, _, _ = self.netSC(feat2, feat1, inputX)
-            # feat1 = self.netFR.getLayersOutDet()
-
-            # new_test_X[start:end] = inputX.data.cpu()
-            # new_test_X[start:end] = torch.cat([inputX,feat1],dim=1).data.cpu()
-            # new_test_X[start:end] = torch.cat([inputX, feat1, feat2], dim=1).data.cpu()
-            # feat2, x1 = self.add_cross_weight(mus, inputX)
-            # feat3, x2 = self.add_cross_weight(att, inputX)
-            # feat2, feat3 = self.cross_weight(feat2, feat3)
-
-            # new_test_X[start:end] = torch.cat([X, feat1], dim=1).data.cpu()
-            # new_test_X[start:end] = torch.cat([inputX, feat1, feat2], dim=1).data.cpu()
             new_test_X[start:end] = X.data.cpu()
             start = end
-            # pca = PCA(n_components=4096, whiten=False)
-            # fit = pca.fit(new_test_X)
-            # features = pca.fit_transform(new_test_X)
-            # features = torch.from_numpy(features)
-            # fnorm = torch.norm(features, p=2, dim=1, keepdim=True)
-            # new_test_X = features.div(fnorm.expand_as(features))
         return new_test_X
 
     def compute_per_class_acc_gzsl_knn(self,  predicted_label, test_label, target_classes):
