@@ -45,6 +45,7 @@ print("# of training samples: ", data.ntrain)
 cls_criterion = nn.NLLLoss()
 mse_loss = nn.MSELoss()
 
+########################################### the FREE model ############################################
 if opt.dataset in ['CUB']:
     center_criterion = TripCenterLoss_margin(num_classes=opt.nclass_seen, feat_dim=opt.attSize, use_gpu=opt.cuda)
 elif opt.dataset in ['AWA2']:
@@ -78,7 +79,7 @@ beta = 0
 Attribute = torch.LongTensor(opt.nclass_all, opt.attSize)
 
 
-##########
+###########################################
 if opt.cuda:
     netD.cuda()
     netE.cuda()
