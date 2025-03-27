@@ -1,40 +1,32 @@
 import argparse
 
+###############################################################
 parser = argparse.ArgumentParser()
 
 parser.add_argument('--dataset', default='FLO', help='FLO')
 parser.add_argument('--dataroot', default='data', help='path to dataset')
-
 parser.add_argument('--image_embedding', default='res101')
 parser.add_argument('--class_embedding', default='att')
-
 parser.add_argument('--syn_num', type=int, default=100, help='number features to generate per class')
 parser.add_argument('--gzsl', action='store_true', default=False, help='enable generalized zero-shot learning')
-
 parser.add_argument('--preprocessing', action='store_true', default=False, help='enbale MinMaxScaler on visual features')
 parser.add_argument('--standardization', action='store_true', default=False)
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=8)
-
 parser.add_argument('--batch_size', type=int, default=64, help='input batch size')
 parser.add_argument('--resSize', type=int, default=2048, help='size of visual features')
 parser.add_argument('--attSize', type=int, default=1024, help='size of semantic features')
-
 parser.add_argument('--nz', type=int, default=312, help='size of the latent z vector')
-
 parser.add_argument('--ngh', type=int, default=4096, help='size of the hidden units in generator')
 parser.add_argument('--ndh', type=int, default=1024, help='size of the hidden units in discriminator')
-
 parser.add_argument('--nepoch', type=int, default=2000, help='number of epochs to train for')
 parser.add_argument('--cls_nepoch', type=int, default=2000, help='number of epochs to train for classifier')
 parser.add_argument('--critic_iter', type=int, default=5, help='critic iteration, following WGAN-GP')
-
-
 parser.add_argument('--lambda1', type=float, default=10, help='gradient penalty regularizer, following WGAN-GP')
 parser.add_argument('--lambda2', type=float, default=10, help='gradient penalty regularizer, following WGAN-GP')
 parser.add_argument('--radius', type=int, default=1, help='radius of L_2 feature nomalization')
-
 parser.add_argument('--att_criterian', type=str, default='W1')
 
+################################# Please pay attention ####################################
 parser.add_argument('--lr', type=float, default=0.001, help='learning rate to train GANs ')
 parser.add_argument('--feed_lr', type=float, default=0.0001, help='learning rate to train GANs ')
 parser.add_argument('--dec_lr', type=float, default=0.0001, help='learning rate to train GANs ')
@@ -67,8 +59,8 @@ parser.add_argument('--recons_weight', type=float, default=0.01, help='recons_we
 parser.add_argument('--loop', type=int, default=2)
 parser.add_argument('--freeze_dec', action='store_true', default=False, help='Freeze Decoder for fake samples')
 
-###############################################################
-parser.add_argument('--result_root', type=str, default='/home/hujing/GZSL/result', help='root path for saving checkpoint')
+################################# Please pay attention ####################################
+parser.add_argument('--result_root', type=str, default='/home/'{your name}'/GZSL/result', help='root path for saving checkpoint')
 parser.add_argument('--center_margin', type=float, default=150, help='the margin in the center loss')
 parser.add_argument('--center_weight', type=float, default=0.5, help='the weight for the center loss')
 parser.add_argument('--incenter_weight', type=float, default=0.5, help='the weight for the center loss')
@@ -77,7 +69,6 @@ parser.add_argument('--nclass_seen', type=int, default=150, help='number of seen
 parser.add_argument('--latensize', type=int, default=2048, help='size of semantic features')
 parser.add_argument('--i_c', type=float, default=0.1, help='information constrain')
 parser.add_argument('--lr_dec', action='store_true', default=False, help='enable lr decay or not')
-parser.add_argument('--lr_dec_ep', type=int, default=1, help='lr decay for every 100 epoch')
 
 #################################################################
 opt = parser.parse_args()
