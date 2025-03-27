@@ -300,10 +300,6 @@ class SemanticSelector(nn.Module):
         self.w = self.add_cross_weight
 
     def forward(self, semantic_global, semantic_local, visual_feat, epoch=None):
-        if epoch == 10:
-            # plot_semantic_correlations(semantic_global, semantic_global, "bg")
-            plot_semantic_correlations(semantic_local, semantic_local, "bl")
-            # plot_semantic_correlations(semantic_global, semantic_local, "bm")
 
         h = visual_feat
         semantic_global = self.proj_global_up(semantic_global) * self.proj_global_down(semantic_global)
@@ -342,11 +338,6 @@ class SemanticSelector(nn.Module):
         combined1 = torch.cat([semantic_local_output, h], dim=1)
         gate1 = self.gate(combined1)
         fused_feat2 = F.normalize(gate1 * semantic_local_output + (1 - gate1) * h)
-
-        if epoch == 10:
-            # plot_semantic_correlations(fused_feat1, fused_feat1, "ag")
-            plot_semantic_correlations(fused_feat2, fused_feat2, "al")
-            # plot_semantic_correlations(fused_feat1, fused_feat2, "am")
 
         # fused_feat2 = F.softmax(h, dim=1)*fused_feat2
         # fused_feat2 = F.normalize(fused_feat2 + semantic_local)
