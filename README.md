@@ -5,7 +5,7 @@ This repository contains the training codes for the paper "Dual Path Feature Ref
 
 # References
 Parts of our codes based on:
--[FREE](https://github.com/shiming-chen/FREE)
+-[FREE](https://github.com/shiming-chen/FREE) \\
 -[SHIP](https://github.com/mrflogs/SHIP)
 
 
