@@ -4,8 +4,8 @@ the code of the DPFR.
 This repository contains the training codes for the paper "Dual Path Feature Refinement Network for Zero-Shot Learning."
 
 # References
-Parts of our codes based on:
--[FREE](https://github.com/shiming-chen/FREE) \\
+We thank the following repos for providing helpful components in our work.:
+-[FREE](https://github.com/shiming-chen/FREE) <br>
 -[SHIP](https://github.com/mrflogs/SHIP)
 
 
