@@ -30,7 +30,7 @@ print("Torchvision Version: ", torchvision.__version__)
 img_dir = os.path.join(NFS_path, 'data/CUB/')
 file_paths = os.path.join(NFS_path, 'data/xlsa17/data/CUB/res101.mat')
 save_path = os.path.join(NFS_path, 'data/CUB/feature_map_VIT_101_CUB.hdf5')
-attribute_path = '/home/{}/projects/zsl/Baseline1_DAZLE/w2v/CUB_attribute.pkl'
+attribute_path = '/home/{}/projects/w2v/CUB_attribute.pkl'
 model_name = "vit"
 
 batch_size = 64
@@ -47,8 +47,6 @@ for param in model_f.parameters():
     param.requires_grad = False
 
 class CustomedDataset(Dataset):
-    """Face Landmarks dataset."""
-
     def __init__(self, img_dir , file_paths, transform=None):
         self.matcontent = sio.loadmat(file_paths)
         self.image_files = np.squeeze(self.matcontent['image_files'])
