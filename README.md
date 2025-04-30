@@ -1,7 +1,7 @@
-# DPFR
-the code of the DPFR.
+# DPSR
+the code of the DPSR.
 
-This repository contains the training codes for the paper "Dual Path Feature Refinement Network for Zero-Shot Learning."
+This repository contains the training codes for the paper "Dual Path Semantic Refinement Network for Zero-Shot Learning"
 
 # References
 We thank the following repos for providing helpful components in our work: <br>
